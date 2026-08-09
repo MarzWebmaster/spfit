@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Environment variables (contains secrets)
+.env
+.env.*
+!.env.example
+
+# Backup files (should be stored outside project/synced folders via BACKUP_PATH)
+temp/db-backups/
+temp/system-backups/
+*.sql
+!api/migrations/*.sql
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.viteD:\SPFIT_Backups/
+SPFIT_Backups/
+*.bak
+uploads/asset-attachments/
+
+# Large files - exclude from git
+uv-x86_64-pc-windows-msvc.zip
+uploads/
+temp/
+*.zip

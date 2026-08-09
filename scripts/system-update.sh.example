@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Example update script for aaPanel deployment.
+# Usage: ./system-update.sh.example [branch]
+
+BRANCH="${1:-${SPFIT_UPDATE_BRANCH:-main}}"
+APP_DIR="/www/wwwroot/spfit"
+BACKUP_DIR="/www/backup/spfit"
+
+# Export DB vars before running this script, for example from .env:
+# export DB_HOST=...
+# export DB_USER=...
+# export DB_PASSWORD=...
+# export DB_NAME=...
+
+DATE_TAG="$(date +%F_%H%M%S)"
+LOCK_FILE="/tmp/spfit_update.lock"
+
+if [ -f "$LOCK_FILE" ]; then
+  echo "Update sedang berjalan"
+  exit 1
+fi
+trap 'rm -f "$LOCK_FILE"' EXIT
+
+touch "$LOCK_FILE"
+cd "$APP_DIR"
+
+mkdir -p "$BACKUP_DIR/db" "$BACKUP_DIR/app"
+
+echo "[1/6] Backup database"
+mysqldump -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" > "$BACKUP_DIR/db/db_${DATE_TAG}.sql"
+
+echo "[2/6] Backup files (.env + uploads)"
+tar -czf "$BACKUP_DIR/app/app_${DATE_TAG}.tar.gz" .env uploads
+
+echo "[3/6] Pull latest code from branch $BRANCH"
+git fetch origin
+git reset --hard "origin/$BRANCH"
+
+echo "[4/6] Install dependencies + build"
+npm ci
+npm run build:production
+
+echo "[5/6] Restart service"
+# Adjust this command for your aaPanel setup.
+pm2 restart spfit
+
+echo "[6/6] Health check"
+sleep 3
+curl -fsS "http://127.0.0.1:3005/api/system/health" >/dev/null
+
+echo "Update selesai"

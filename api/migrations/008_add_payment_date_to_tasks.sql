@@ -1,0 +1,2 @@
+ALTER TABLE tasks
+ADD COLUMN payment_date DATE NULL;

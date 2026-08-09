@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS asset_model_intel (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  model_raw VARCHAR(255) NULL,
+  model_norm VARCHAR(255) NOT NULL,
+  serial_norm VARCHAR(120) NULL,
+  detected_brand VARCHAR(150) NULL,
+  detected_category VARCHAR(150) NULL,
+  detected_brand_id INT NULL,
+  detected_category_id INT NULL,
+  confidence_brand DECIMAL(5,4) NOT NULL DEFAULT 0,
+  confidence_category DECIMAL(5,4) NOT NULL DEFAULT 0,
+  confidence_overall DECIMAL(5,4) NOT NULL DEFAULT 0,
+  language VARCHAR(10) NULL,
+  sources_json JSON NULL,
+  evidence_json JSON NULL,
+  hit_count INT NOT NULL DEFAULT 1,
+  last_seen_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_asset_model_intel_model_norm (model_norm),
+  KEY idx_asset_model_intel_brand_id (detected_brand_id),
+  KEY idx_asset_model_intel_category_id (detected_category_id),
+  KEY idx_asset_model_intel_serial_norm (serial_norm)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

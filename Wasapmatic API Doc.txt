@@ -1,0 +1,2069 @@
+* Account
+* Partners
+* Contacts
+* OTP
+* SMS
+* Gateways
+* WhatsApp
+* Android
+* Miscellaneous
+o getGet Shorteners
+Wasapmatic API (10.07.25)
+This is the official API documentation for Wasapmatic. You can use this API to access the features of your Wasapmatic account programmatically.
+Account
+Account related APIs
+Get Remaining Credits
+Get Remaining Credits. Requires "get_credits" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageResponses
+200 
+Successful response
+default 
+Error response
+get/get/credits
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/credits?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Remaining Credits",
+* "data": {
+o "credits": "798.634",
+o "currency": "GBP"
+}
+}
+Get Subscription Package
+Get Subscription Package. Requires "get_subscription" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageResponses
+200 
+Successful response
+default 
+Error response
+get/get/subscription
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/subscription?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Subscription Package",
+* "data": {
+o "name": "Starter",
+o "usage": {}
+}
+}
+Partners
+Partners related APIs
+Get Partner Earnings
+Get Partner Earnings. Requires "get_earnings" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageResponses
+200 
+Successful response
+default 
+Error response
+get/get/earnings
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/earnings?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Partner Credits",
+* "data": {
+o "earnings": "1.43638",
+o "currency": "GBP"
+}
+}
+Contacts
+Contacts related APIs
+Create Contact
+Create Contact. Requires "create_contact" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.phone
+requiredstring
+Recipient mobile number, it will accept E.164 formatted number or locally formatted numbers using the country code from your profile settings. Example for Malaysia E.164: +60123456789 Local: 012-3456789name
+requiredstring
+Name of contact.groups
+requiredstring
+List of contact group ID's separated by commas. You can get group ID's from /get/groups (Your contact groups).Responses
+200 
+Successful response
+default 
+Error response
+post/create/contact
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/create/contact" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "phone=RECIPIENT_PHONE_NUMBER" \
+     -F "name=CONTACT_NAME" \
+     -F "groups=GROUP_ID_LIST"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Contact has been created!",
+* "data": false
+}
+Create Group
+Create Group. Requires "create_group" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.name
+requiredstring
+Name of group.Responses
+200 
+Successful response
+default 
+Error response
+post/create/group
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/create/group" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "name=GROUP_NAME"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Contact group has been created!",
+* "data": false
+}
+Delete Contact
+Delete Contact. Requires "delete_contact" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Contact IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/contact
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/contact?secret=YOUR_API_SECRET&id=CONTACT_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Contact has been deleted!",
+* "data": false
+}
+Delete Group
+Delete Group. Requires "delete_group" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Contact group IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/group
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/group?secret=YOUR_API_SECRET&id=GROUP_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Contact group has been deleted!",
+* "data": false
+}
+Delete Unsubscribed
+Delete Unsubscribed Contact. Requires "delete_unsubscribed" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Contact IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/unsubscribed
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/unsubscribed?secret=YOUR_API_SECRET&id=CONTACT_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Unsubscribed contact has been deleted!",
+* "data": false
+}
+Get Contacts
+Get Contacts. Requires "get_contacts" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/contacts
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/contacts?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Saved Contacts",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get Groups
+Get Groups. Requires "get_groups" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/groups
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/groups?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Contact Groups",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get Unsubscribed
+Get Unsubscribed Contacts. Requires "get_unsubscribed" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/unsubscribed
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/unsubscribed?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Unsubscribed Contacts",
+* "data": [
+o {}
+]
+}
+OTP
+OTP related APIs
+Send OTP
+Send a one-time-password to specified mobile number. Requires "otp" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.type
+requiredstring
+Enum: "sms" "whatsapp"
+Type of message, it can be SMS or WhatsApp.message
+requiredstring
+OTP message to send, you can use {{otp}} shortcode to include the OTP anywhere in the message.phone
+requiredstring
+Recipient mobile number, it will accept E.164 formatted numbers. Example for Malaysia: E.164: +60123456789.expirenumber
+OTP expiration time in seconds. Default value is 300 seconds or 5 minutes.prioritynumber
+Default: 2
+For WhatsApp only. If you want to send the message as priority, it will be sent immediately. 1 for yes and 2 for no.accountstring
+This is only for WhatsApp type. WhatsApp account you want to use for sending, you can get account unique IDs from /get/wa.accounts or in the dashboard.modestring
+Enum: "devices" "credits"
+This is only required for SMS type. This is the mode of sending the message. 'devices' allows you to use linked Android devices, while 'credits' uses gateways and requires sufficient credit balance.devicestring
+This is only for SMS type. Linked device unique ID, required for 'devices' mode. You can get linked device unique IDs from /get/devices (Your devices).gatewaystring or number
+This is only for SMS type. Partner device unique ID or gateway ID, required for 'credits' mode. You can get partner device and gateway IDs from /get/rates.simnumber
+Enum: 1 2
+This is only for SMS type. SIM slot number you want to use, for 'devices' mode only.Responses
+200 
+Successful response
+default 
+Error response
+post/send/otp
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/send/otp" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "type=sms" \
+     -F "message=Your OTP is {{otp}}" \
+     -F "phone=RECIPIENT_PHONE_NUMBER" \
+     -F "expire=300"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "OTP has been sent!",
+* "data": {
+o "phone": "+60123456789",
+o "message": "Your OTP is 345678",
+o "messageId": 123,
+o "otp": 345678
+}
+}
+Verify OTP
+Verify one-time-password from user supplied data. Requires "otp" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageotp
+requiredstring
+The otp you got from a user supplied input or dataResponses
+200 
+Successful response
+default 
+Error response
+get/get/otp
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/otp?secret=YOUR_API_SECRET&otp=USER_PROVIDED_OTP" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "OTP has been verified!",
+* "data": false
+}
+SMS
+SMS related APIs
+Delete Received Message
+Delete Received Message. Requires "delete_sms_received" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Received message IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/sms.received
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/sms.received?secret=YOUR_API_SECRET&id=RECEIVED_MESSAGE_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Received SMS has been deleted!",
+* "data": false
+}
+Delete SMS Campaign
+Delete SMS Campaign. Requires "delete_sms_campaign" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Campaign IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/sms.campaign
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/sms.campaign?secret=YOUR_API_SECRET&id=CAMPAIGN_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "SMS campaign has been deleted!",
+* "data": false
+}
+Delete Sent Message
+Delete Sent Message. Requires "delete_sms_sent" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Sent message IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/sms.sent
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/sms.sent?secret=YOUR_API_SECRET&id=SENT_MESSAGE_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Sent SMS has been deleted!",
+* "data": false
+}
+Get Pending Messages
+Get Pending Messages. Requires "get_sms_pending" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/sms.pending
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/sms.pending?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Pending SMS Messages",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get Received Messages
+Get Received Messages. Requires "get_sms_received" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/sms.received
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/sms.received?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Received SMS Messages",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get SMS Campaigns
+Get SMS Campaigns. Requires "get_sms_campaigns" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/sms.campaigns
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/sms.campaigns?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "SMS Campaigns",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get Single Message
+Retrieve a message by ID. Requires get_sms_sent API permission for sent type, and get_sms_received for received type.
+query Parameters
+secret
+requiredstring
+The API secret you copied from the Tools -> API Keys pageid
+requiredinteger
+The ID of the SMS messagetype
+requiredstring
+Enum: "sent" "received"
+The message type to query: sent or receivedResponses
+200 
+Successful response
+default 
+Error response
+get/get/sms.message
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/sms.message?secret=YOUR_API_SECRET&type=sent&id=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Example
+Sent SMSReceived SMSSent SMS
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Message was found!",
+* "data": {
+o "id": 1,
+o "mode": "credits",
+o "sender": "SMPP TEST",
+o "sender_type": "gateway",
+o "sim": 0,
+o "priority": false,
+o "api": true,
+o "status": "sent",
+o "status_code": "",
+o "recipient": "+60123456789",
+o "message": "hello world",
+o "created": 1732327019
+}
+}
+Get Sent Messages
+Get Sent Messages. Requires "get_sms_sent" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/sms.sent
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/sms.sent?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Sent SMS Messages",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Send Bulk SMS
+Send bulk sms messages. Requires "sms_send_bulk" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.mode
+requiredstring
+Enum: "devices" "credits"
+Mode of sending the message, it can be 'devices' which will allow you to use your linked android devices or 'credits' which will allow you to use gateways and partner devices. 'credits' requires you to have enough credit balance to send messages.campaign
+requiredstring
+Name of the campaign, you will see this in the SMS campaign manager.numbersstring
+List of phone numbers separated by commas. It can be optional if 'groups' parameter is not empty. It will accept E.164 formatted numbers or locally formatted numbers using the country code from your profile settings. E.164: +60123456789 Local: 012-3456789.groupsstring
+List of contact group ID's separated by commas. It can be optional if 'numbers' parameter is not empty. You can get group ID's from /get/groups (Your contact groups).message
+requiredstring
+Message you want to send, spintax and shortcodes are supported.devicestring
+Linked device unique ID, this is required if you will send with 'devices' mode. You can get linked device unique ID from /get/devices (Your devices).gatewaystring or number
+Partner device unique ID or gateway ID, this is required if you will send with 'credits' mode. You can get a partner device unique ID and gateway ID from /get/rates.simnumber
+Enum: 1 2
+SIM slot number you want to use. For 'devices' mode only.prioritynumber
+Default: 0
+Enum: 0 1 2
+Priority level. 0 or 1 = high priority (sent immediately), 2 = normal priority (queued). For 'devices' mode only.shortenernumber
+Shortener ID, specify the shortener you want to use if you want to shorten the links in your message. You can get the list of available shorteners from /get/shorteners.Responses
+200 
+Successful response
+default 
+Error response
+post/send/sms.bulk
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/send/sms.bulk" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "mode=devices" \
+     -F "campaign=Campaign_Name" \
+     -F "message=Your message here" \
+     -F "numbers=PHONE_NUMBERS_COMMA_SEPARATED" \
+     -F "sim=1"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Bulk messages has been queued for sending!",
+* "data": {
+o "messageId": 123
+}
+}
+Send Single SMS
+Send a single sms message. Requires "sms_send" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.mode
+requiredstring
+Enum: "devices" "credits"
+Mode of sending the message, it can be 'devices' which will allow you to use your linked android devices or 'credits' which will allow you to use gateways and partner devices. 'credits' requires you to have enough credit balance to send messages.phone
+requiredstring
+Recipient mobile number, it will accept E.164 formatted numbers or locally formatted numbers using the country code from your profile settings. Example for Malaysia: E.164: +60123456789, Local: 012-3456789.message
+requiredstring
+Message you want to send, spintax is also supported.devicestring
+Linked device unique ID, this is required if you will send with 'devices' mode. You can get linked device unique IDs from /get/devices (Your devices).gatewaystring or number
+Partner device unique ID or gateway ID, this is required if you will send with 'credits' mode. You can get partner device unique ID and gateway ID from /get/rates.simnumber
+Enum: 1 2
+SIM slot number you want to use. For 'devices' mode only.prioritynumber
+Default: 0
+Enum: 0 1 2
+Priority level. 0 or 1 = high priority (sent immediately), 2 = normal priority (queued). For 'devices' mode only.shortenernumber
+Shortener ID, specify the shortener you want to use if you want to shorten the links in your message. You can get the list of available shorteners from /get/shorteners.Responses
+200 
+Successful response
+default 
+Error response
+post/send/sms
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/send/sms" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "mode=devices" \
+     -F "phone=RECIPIENT_PHONE_NUMBER" \
+     -F "message=Your message here" \
+     -F "sim=1"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Message has been queued for sending!",
+* "data": {
+o "messageId": 123
+}
+}
+Start SMS Campaign
+Start SMS Campaign. Requires "start_sms_campaign" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagecampaign
+requirednumber
+Campaign IDResponses
+200 
+Successful response
+default 
+Error response
+get/remote/start.sms
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/remote/start.sms?secret=YOUR_API_SECRET&campaign=CAMPAIGN_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "SMS campaign has been resumed!",
+* "data": false
+}
+Stop SMS Campaign
+Stop SMS Campaign. Requires "stop_sms_campaign" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagecampaign
+requirednumber
+Campaign IDResponses
+200 
+Successful response
+default 
+Error response
+get/remote/stop.sms
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/remote/stop.sms?secret=YOUR_API_SECRET&campaign=CAMPAIGN_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "SMS campaign has been paused!",
+* "data": false
+}
+Gateways
+Gateways related APIs
+Get Gateway Rates
+Get Gateway Rates. Requires "get_rates" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageResponses
+200 
+Successful response
+default 
+Error response
+get/get/rates
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/rates?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Gateway Rates",
+* "data": {
+o "gateways": [],
+o "partners": []
+}
+}
+WhatsApp
+WhatsApp related APIs
+Delete Received Chat
+Delete Received Chat. Requires "delete_wa_received" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Received chat IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/wa.received
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/wa.received?secret=YOUR_API_SECRET&id=RECEIVED_CHAT_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Received WhatsApp chat has been deleted!",
+* "data": false
+}
+Delete Sent Chat
+Delete Sent Chat. Requires "delete_wa_sent" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Sent chat IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/wa.sent
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/wa.sent?secret=YOUR_API_SECRET&id=SENT_CHAT_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Sent WhatsApp chat has been deleted!",
+* "data": false
+}
+Delete WhatsApp Account
+Delete WhatsApp Account. Requires "delete_wa_account" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageunique
+requiredstring
+WhatsApp Unique IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/wa.account
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/wa.account?secret=YOUR_API_SECRET&unique=WHATSAPP_UNIQUE_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "WhatsApp account has been deleted!",
+* "data": false
+}
+Delete WhatsApp Campaign
+Delete WhatsApp Campaign. Requires "delete_wa_campaign" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Campaign IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/wa.campaign
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/wa.campaign?secret=YOUR_API_SECRET&id=CAMPAIGN_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "WhatsApp campaign has been deleted!",
+* "data": false
+}
+Get Accounts
+Get Accounts. Requires "get_wa_accounts" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/wa.accounts
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.accounts?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp Accounts",
+* "data": [
+o {}
+]
+}
+Get Pending Chats
+Get Pending Chats. Requires "get_wa_pending" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/wa.pending
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.pending?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Pending WhatsApp Chats",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get Received Chats
+Get Received Chats. Requires "get_wa_received" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/wa.received
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.received?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Pending WhatsApp Chats",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get Single Chat
+Retrieve a chat by ID. Requires get_wa_sent API permission for sent type, and get_wa_received for received type.
+query Parameters
+secret
+requiredstring
+The API secret you copied from the Tools -> API Keys pageid
+requiredinteger
+The ID of the WhatsApp messagetype
+requiredstring
+Enum: "sent" "received"
+The message type to query: sent or receivedResponses
+200 
+Successful response
+default 
+Error response
+get/get/wa.message
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.message?secret=YOUR_API_SECRET&type=sent&id=2" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Example
+Sent MessageReceived MessageSent Message
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Message was found!",
+* "data": {
+o "id": 2,
+o "account": "+60123456789",
+o "status": "sent",
+o "api": false,
+o "recipient": "+60123456789",
+o "message": "hello hello",
+o "attachment": false,
+o "created": 1716685713
+}
+}
+Get Sent Chats
+Get Sent Chats. Requires "get_wa_sent" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/wa.sent
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.sent?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Sent WhatsApp Chats",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get WhatsApp Campaigns
+Get WhatsApp Campaigns. Requires "get_wa_campaigns" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/wa.campaigns
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.campaigns?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp Campaigns",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get WhatsApp Group Contacts
+Get WhatsApp Group Contacts. Requires "get_wa_groups" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageunique
+requiredstring
+WhatsApp Unique IDgid
+requiredstring
+WhatsApp Group IDResponses
+200 
+Successful response
+default 
+Error response
+get/get/wa.group.contacts
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.group.contacts?secret=YOUR_API_SECRET&unique=WHATSAPP_UNIQUE_ID&gid=WHATSAPP_GROUP_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp Group Contacts",
+* "data": [
+o {},
+o {}
+]
+}
+Get WhatsApp Groups
+Get WhatsApp Groups. Requires "get_wa_groups" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageunique
+requiredstring
+WhatsApp Unique IDResponses
+200 
+Successful response
+default 
+Error response
+get/get/wa.groups
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.groups?secret=YOUR_API_SECRET&unique=WHATSAPP_UNIQUE_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp Groups",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Get WhatsApp QR Image
+Get WhatsApp QR Image. Requires "create_whatsapp" API permission.
+query Parameters
+token
+requiredstring
+The token string you got from create WhatsApp QRCodeResponses
+200 
+Successful response
+default 
+Error response
+get/get/wa.qr
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.qr?token=YOUR_TOKEN_STRING" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+No sample
+Get WhatsApp Servers
+Get WhatsApp Servers. Requires "create_whatsapp" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page *Responses
+200 
+Successful response
+default 
+Error response
+get/get/wa.servers
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.servers?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp Servers",
+* "data": [
+o {},
+o {}
+]
+}
+Get WhatsApp information after linking
+Get WhatsApp information after linking. Requires "create_whatsapp" API permission.
+query Parameters
+token
+requiredstring
+The token string you got from create WhatsApp QRCodeResponses
+200 
+Successful response
+default 
+Error response
+get/get/wa.info
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/wa.info?token=YOUR_TOKEN_STRING" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+No sample
+Link WhatsApp Account
+Link WhatsApp Account. Use this to link WhatsApp accounts that are not yet in the system. Requires "create_whatsapp" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagesidnumber
+Optional WhatsApp server ID. If not provided, the system will automatically select the best available server from your package. You can get available server IDs from /get/wa.serversResponses
+200 
+Successful response
+default 
+Error response
+get/create/wa.link
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/create/wa.link?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+
+# Optional: Specify a specific server
+# curl -X GET "https://app.wasapmatic.com/api/create/wa.link?secret=YOUR_API_SECRET&sid=WHATSAPP_SERVER_ID" \
+#      -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp QRCode has been created!",
+* "data": {
+o "qrstring": "2@MwggDzdZqWfC4vYBJQsExNnSuE6+fyGYVo+/RfMyWUxJBW2Q0yDKykpqRi+pSoHquonRk5P6CaVOsg==,BpVhDS5yHBbN9k/xCiQIWwOduYcyo/1tMhoWaNpwJC8=,7F75UfkJzXY6GbLy+3evLc9aCkyN40K2ORR0dZ84eSk=,7nQ0NTR4eaXRZOwIbv9FKoFpFTSNu6fHzKGaICsyDzc=",
+o "qrimagelink": "https://app.wasapmatic.com//api/get/wa.qr?token=e10adc3949ba59abbe56e057f20f883e",
+o "infolink": "https://app.wasapmatic.com//api/get/wa.info?token=e10adc3949ba59abbe56e057f20f883e"
+}
+}
+Relink WhatsApp Account
+Relink WhatsApp Account. Use this to relink WhatsApp accounts that are already in the system. Requires "create_whatsapp" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagesidnumber
+Optional WhatsApp server ID. If not provided, the system will automatically prefer the current server or select another available server from your package. You can get available server IDs from /get/wa.serversunique
+requiredstring
+The unique ID of the WhatsApp account you want to relinkResponses
+200 
+Successful response
+default 
+Error response
+get/create/wa.relink
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/create/wa.relink?secret=YOUR_API_SECRET&unique=WHATSAPP_UNIQUE_ID" \
+     -H "Content-Type: application/json"
+
+# Optional: Specify a specific server
+# curl -X GET "https://app.wasapmatic.com/api/create/wa.relink?secret=YOUR_API_SECRET&sid=WHATSAPP_SERVER_ID&unique=WHATSAPP_UNIQUE_ID" \
+#      -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp QRCode has been created!",
+* "data": {
+o "qrstring": "2@MwggDzdZqWfC4vYBJQsExNnSuE6+fyGYVo+/RfMyWUxJBW2Q0yDKykpqRi+pSoHquonRk5P6CaVOsg==,BpVhDS5yHBbN9k/xCiQIWwOduYcyo/1tMhoWaNpwJC8=,7F75UfkJzXY6GbLy+3evLc9aCkyN40K2ORR0dZ84eSk=,7nQ0NTR4eaXRZOwIbv9FKoFpFTSNu6fHzKGaICsyDzc=",
+o "qrimagelink": "https://app.wasapmatic.com//api/get/wa.qr?token=e10adc3949ba59abbe56e057f20f883e"
+}
+}
+Send Bulk Chats
+Send bulk chat messages. Requires "wa_send_bulk" API permission.
+Request Body schema: application/x-www-form-urlencoded
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.account
+requiredstring
+WhatsApp account you want to use for sending. You can get the account unique ID from /get/wa.accounts or in the dashboard.campaign
+requiredstring
+Name of the campaign, you will see this in the WhatsApp campaign manager.recipientsstring
+List of phone numbers or group addresses separated by commas. Optional if 'groups' parameter is not empty. Accepts WhatsApp group address, E.164 formatted number, or locally formatted numbers using the country code from your profile settings.groupsstring
+List of contact group IDs separated by commas. Optional if 'recipients' parameter is not empty. You can get group IDs from /get/groups (Your contact groups).type
+requiredstring
+Default: "text"
+Enum: "text" "media" "document"
+Type of WhatsApp message.message
+requiredstring
+Message or caption you want to send. Spintax and shortcodes are supported.media_filestring <binary>
+For 'media' type messages only. The media file to attach to the WhatsApp message. Supports jpg, png, gif, mp4, mp3, and ogg files.media_urlstring
+For 'media' type messages only. URL to the media file. Must be a direct link. Supports jpg, png, gif, mp4, mp3, and ogg files.media_typestring
+Enum: "image" "audio" "video"
+For 'media' type messages only. Required if using 'media_url' instead of 'media_file'. Declares the file type of the media in the provided URL.document_filestring <binary>
+For 'document' type messages only. The document file to attach to the WhatsApp message. Supports pdf, xml, xls, xlsx, doc, and docx files.document_urlstring
+For 'document' type messages only. URL to the document file. Must be a direct link. Supports pdf, xml, xls, xlsx, doc, and docx files.document_namestring
+For 'document' type messages with 'document_url'. File name of the document. Include the file extension (e.g., document.pdf).document_typestring
+Enum: "pdf" "xml" "xls" "xlsx" "doc" "docx"
+For 'document' type messages only. Required if using 'document_url' instead of 'document_file'. Declares the file type of the document in the provided URL.shortenernumber
+Shortener ID. Specify the shortener to use for shortening links in your message. Get the list of available shorteners from /get/shorteners.Responses
+200 
+Successful response
+default 
+Error response
+post/send/whatsapp.bulk
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/send/whatsapp.bulk" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "secret=YOUR_API_SECRET&account=WHATSAPP_ACCOUNT_UNIQUE_ID&campaign=YOUR_CAMPAIGN_NAME&type=text&message=YOUR_MESSAGE"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "5 chats has been queued for sending!",
+* "data": {
+o "campaignId": 123,
+o "messageIds": []
+}
+}
+Send Single Chat
+Send a single chat message. Requires "wa_send" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.account
+requiredstring
+WhatsApp account you want to use for sending. You can get the account unique ID from /get/wa.accounts or in the dashboard.recipient
+requiredstring
+Recipient mobile number or group address. Accepts WhatsApp group address or E.164 formatted number and locally formatted numbers using the country code from your profile settings. Example: E.164: +60123456789, Local: 012-3456789.typestring
+Default: "text"
+Enum: "text" "media" "document"
+Type of WhatsApp message.message
+requiredstring
+Message or caption you want to send. Spintax is also supported.prioritynumber
+Default: 2
+If you want to send the message as priority, it will be sent immediately. 1 for yes and 2 for no.media_filestring <binary>
+For 'media' type messages only. The media file you want to attach in the WhatsApp message. Supports jpg, png, gif, mp4, mp3, and ogg files.media_urlstring
+For 'media' type messages only. The media file URL. Must be a direct link to the media file. Supports jpg, png, gif, mp4, mp3, and ogg files.media_typestring
+Enum: "image" "audio" "video"
+For 'media' type messages only. Required if using 'media_url'. Specifies the file type of the media in the provided URL.document_filestring <binary>
+For 'document' type messages only. The document file you want to attach in the WhatsApp message. Supports pdf, xml, xls, xlsx, doc, and docx files.document_urlstring
+For 'document' type messages only. The document file URL. Must be a direct link to the document file. Supports pdf, xml, xls, xlsx, doc, and docx files.document_namestring
+For 'document' type with 'document_url' messages only. The document file name. Include the file extension (e.g., document.pdf).document_typestring
+Enum: "pdf" "xml" "xls" "xlsx" "doc" "docx"
+For 'document' type messages only. Required if using 'document_url'. Specifies the file type of the document in the provided URL.shortenernumber
+Shortener ID. Specify the shortener you want to use to shorten links in your message. Get the list of available shorteners from /get/shorteners.Responses
+200 
+Successful response
+default 
+Error response
+post/send/whatsapp
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/send/whatsapp" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "account=WHATSAPP_ACCOUNT_UNIQUE_ID" \
+     -F "recipient=RECIPIENT_PHONE_NUMBER" \
+     -F "type=text" \
+     -F "message=YOUR_MESSAGE"
+Response samples
+* 200
+* default
+Content type
+application/json
+Example
+Priority Message SentQueued MessagePriority Message Sent
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp chat has been sent!",
+* "data": {
+o "messageId": 123
+}
+}
+Start WhatsApp Campaign
+Start WhatsApp Campaign. Requires "start_wa_campaign" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagecampaign
+requirednumber
+Campaign IDResponses
+200 
+Successful response
+default 
+Error response
+get/remote/start.chats
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/remote/start.chats?secret=YOUR_API_SECRET&campaign=CAMPAIGN_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "WhatsApp campaign has been resumed!",
+* "data": false
+}
+Stop WhatsApp Campaign
+Stop WhatsApp Campaign. Requires "stop_wa_campaign" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagecampaign
+requirednumber
+Campaign IDResponses
+200 
+Successful response
+default 
+Error response
+get/remote/stop.chats
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/remote/stop.chats?secret=YOUR_API_SECRET&campaign=CAMPAIGN_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "WhatsApp campaign has been resumed!",
+* "data": false
+}
+Validate a WhatsApp phone number
+Validate a phone number if it exists on WhatsApp. Requires "validate_wa_phone" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageunique
+requiredstring
+WhatsApp Unique IDphone
+requiredstring
+E.164 formatted phone numberResponses
+200 
+Successful response
+default 
+Error response
+get/validate/whatsapp
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/validate/whatsapp?secret=YOUR_API_SECRET&unique=WHATSAPP_UNIQUE_ID&phone=PHONE_NUMBER" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "WhatsApp phone number is valid!",
+* "data": {
+o "jid": "+60123456789@s.whatsapp.net",
+o "phone": "+60123456789"
+}
+}
+Android
+Android related APIs
+Delete Android Notification
+Delete Android Notification. Requires "delete_notification" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+Notification IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/notification
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/notification?secret=YOUR_API_SECRET&id=NOTIFICATION_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "Notification has been deleted!",
+* "data": false
+}
+Get Devices
+Get Devices. Requires "get_devices" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/devices
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/devices?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Android Devices",
+* "data": [
+o {}
+]
+}
+Delete USSD Request
+Delete USSD Request. Requires "delete_ussd" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageid
+requirednumber
+USSD request IDResponses
+200 
+Successful response
+default 
+Error response
+get/delete/ussd
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/delete/ussd?secret=YOUR_API_SECRET&id=USSD_REQUEST_ID" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "USSD request has been deleted!",
+* "data": false
+}
+Get USSD Requests
+Get USSD Requests. Requires "get_ussd" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pagelimitnumber
+Default: 10
+Limit the number of results per page.pagenumber
+Default: 1
+Pagination of results.Responses
+200 
+Successful response
+default 
+Error response
+get/get/ussd
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/ussd?secret=YOUR_API_SECRET&limit=10&page=1" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "USSD Requests",
+* "data": [
+o {},
+o {},
+o {}
+]
+}
+Send USSD Request
+Send USSD Request. Requires "ussd" API permission.
+Request Body schema: multipart/form-data
+required
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) page.code
+requiredstring
+MMI request code. Please make sure that you are using a valid MMI code, if not, it will fail.sim
+requirednumber
+SIM slot number you want to use.device
+requiredstring
+Linked device unique ID. You can get linked device unique ID from /get/devices (Your devices).Responses
+200 
+Successful response
+default 
+Error response
+post/send/ussd
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X POST "https://app.wasapmatic.com/api/send/ussd" \
+     -H "Content-Type: multipart/form-data" \
+     -F "secret=YOUR_API_SECRET" \
+     -F "code=*123#" \
+     -F "sim=1" \
+     -F "device=DEVICE_UNIQUE_ID"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+{
+* "status": 200,
+* "message": "WhatsApp message has been queued for sending!",
+* "data": false
+}
+Miscellaneous
+Miscellaneous APIs
+Get Shorteners
+Get Shorteners. Requires "get_shorteners" API permission.
+query Parameters
+secret
+requiredstring
+The API secret you copied from (Tools -> API Keys) pageResponses
+200 
+Successful response
+default 
+Error response
+get/get/shorteners
+Request samples
+* cURL
+* Python
+* Node.js
+* PHP
+Copy
+curl -X GET "https://app.wasapmatic.com/api/get/shorteners?secret=YOUR_API_SECRET" \
+     -H "Content-Type: application/json"
+Response samples
+* 200
+* default
+Content type
+application/json
+Copy
+Expand allCollapse all
+{
+* "status": 200,
+* "message": "Available Shorteners",
+* "data": [
+o {}
+]
+}
+* 
+
+
