@@ -1,25 +1,1981 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1d4ed8" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <title>SPFIT</title>
-    <script type="module">
-      if (import.meta.hot?.on) {
-        import.meta.hot.on('vite:error', (error) => {
-          if (error.err) {
-            console.error([error.err.message, error.err.frame].filter(Boolean).join('\n'));
-          }
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPFit API Documentation</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#1e293b,#334155);border-radius:16px;padding:40px;margin-bottom:30px;text-align:center;border:1px solid #475569}
+header h1{font-size:2.5em;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+header p{color:#94a3b8;font-size:1.1em}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.75em;font-weight:600;margin:2px}
+.badge-get{background:#065f46;color:#6ee7b7}
+.badge-post{background:#7c2d12;color:#fb923c}
+.badge-put{background:#1e3a5f;color:#60a5fa}
+.badge-patch{background:#581c87;color:#c084fc}
+.badge-delete{background:#7f1d1d;color:#fca5a5}
+.badge-auth{background:#854d0e;color:#fbbf24}
+.badge-admin{background:#7f1d1d;color:#fca5a5}
+.badge-public{background:#065f46;color:#6ee7b7}
+.section{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:20px;border:1px solid #334155}
+.section h2{color:#f1f5f9;font-size:1.5em;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #334155}
+.section h3{color:#cbd5e1;font-size:1.1em;margin:16px 0 8px}
+.endpoint{background:#0f172a;border-radius:8px;padding:16px;margin-bottom:12px;border:1px solid #1e293b}
+.endpoint-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.endpoint-path{font-family:'Fira Code',monospace;font-size:0.95em;color:#e2e8f0;font-weight:600}
+.endpoint-desc{color:#94a3b8;font-size:0.9em}
+.params-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.85em}
+.params-table th{text-align:left;padding:6px 12px;background:#1e293b;color:#94a3b8;font-weight:600;border-bottom:1px solid #334155}
+.params-table td{padding:6px 12px;border-bottom:1px solid #1e293b}
+.params-table code{background:#334155;padding:2px 6px;border-radius:4px;font-size:0.85em;color:#a78bfa}
+code{background:#334155;padding:2px 6px;border-radius:4px;font-size:0.85em;color:#a78bfa}
+pre{background:#0f172a;padding:16px;border-radius:8px;overflow-x:auto;font-size:0.85em;border:1px solid #1e293b;margin:8px 0}
+pre code{background:none;padding:0;color:#e2e8f0}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-bottom:20px}
+.toc a{display:block;background:#1e293b;padding:12px 16px;border-radius:8px;color:#60a5fa;text-decoration:none;border:1px solid #334155;transition:all 0.2s}
+.toc a:hover{border-color:#60a5fa;background:#1e3a5f}
+.alert{background:#7f1d1d;border:1px solid #dc2626;border-radius:8px;padding:16px;margin:16px 0}
+.alert-title{color:#fca5a5;font-weight:600;margin-bottom:4px}
+.alert p{color:#fecaca;font-size:0.9em}
+.info{background:#1e3a5f;border:1px solid #3b82f6;border-radius:8px;padding:16px;margin:16px 0}
+.info-title{color:#93c5fd;font-weight:600;margin-bottom:4px}
+.info p{color:#bfdbfe;font-size:0.9em}
+.fix-box{background:#064e3b;border:1px solid #10b981;border-radius:8px;padding:16px;margin:16px 0}
+.fix-title{color:#6ee7b7;font-weight:600;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:8px 0}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid #1e293b}
+th{background:#1e293b;color:#94a3b8;font-weight:600;font-size:0.85em}
+td{font-size:0.9em}
+.status-ok{color:#6ee7b7}
+.status-err{color:#fca5a5}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<h1>🔧 SPFit API Documentation</h1>
+<p>Sistem Pengurusan Freelance IT — API Reference v1.0</p>
+<p style="margin-top:10px;font-size:0.85em;color:#64748b">Base URL: <code>https://spfit.marz.biz.my/api</code></p>
+<p style="margin-top:6px;font-size:0.8em;color:#475569">Last updated: 2026-08-09 — Verified against source code</p>
+</header>
+
+<div class="info">
+<div class="info-title">🔑 Authentication</div>
+<p>SPFit support 2 kaedah auth:</p>
+<p>1. <strong>JWT Bearer Token</strong> — <code>Authorization: Bearer &lt;token&gt;</code> (dapat dari login)</p>
+<p>2. <strong>API Key</strong> — <code>x-api-key: spfit_xxxxx</code> (untuk bot/automation)</p>
+<p style="margin-top:8px">API key auth auto-set role = <code>Admin</code> dan user ID = negative number (synthetic).</p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<h2 style="margin:20px 0 12px">📑 Table of Contents</h2>
+<div class="toc">
+<a href="#auth">🔐 Authentication</a>
+<a href="#tasks">📋 Tasks</a>
+<a href="#taskdone">✅ Task Done (Tugasan Siap)</a>
+<a href="#tasksettings">⚙️ Task Settings</a>
+<a href="#taskreminders">⏰ Task Reminders</a>
+<a href="#projects">📁 Projects</a>
+<a href="#freelancers">👷 Freelancers</a>
+<a href="#offers">📨 Offers</a>
+<a href="#assets">💻 Assets</a>
+<a href="#assetsettings">⚙️ Asset Settings</a>
+<a href="#assetusers">👤 Asset Users</a>
+<a href="#assetreports">📊 Asset Reports</a>
+<a href="#masterlists">📊 Masterlists</a>
+<a href="#payments">💰 Payments</a>
+<a href="#maincons">🏢 Main Contractors</a>
+<a href="#notifications">🔔 Notifications</a>
+<a href="#users">👤 Users</a>
+<a href="#roles">🛡️ Roles & Permissions</a>
+<a href="#roletypes">📋 Role Types</a>
+<a href="#apikeys">🔑 API Keys</a>
+<a href="#system">⚙️ System</a>
+<a href="#openai">🤖 OpenAI</a>
+<a href="#gemini">🤖 Gemini</a>
+<a href="#ilmu">🧠 Ilmu AI</a>
+<a href="#wasapmatic">📱 Wasapmatic</a>
+<a href="#audit">📝 Audit Trail</a>
+<a href="#delivery">📬 Delivery Logs</a>
+</div>
+
+<!-- ==================== AUTH ==================== -->
+<div class="section" id="auth">
+<h2>🔐 Authentication</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/auth/register</span>
+<span class="badge badge-public">Public</span>
+</div>
+<div class="endpoint-desc">Daftar user baru</div>
+<pre><code>POST /api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Ahmad",
+  "email": "ahmad@example.com",
+  "password": "SecurePass123!",
+  "role_id": 4
+}</code></pre>
+<table class="params-table">
+<tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>name</code></td><td>string</td><td>✅</td><td>Nama penuh</td></tr>
+<tr><td><code>email</code></td><td>string</td><td>✅</td><td>Email unik</td></tr>
+<tr><td><code>password</code></td><td>string</td><td>✅</td><td>Minimum 8 char</td></tr>
+<tr><td><code>role_id</code></td><td>number</td><td>❌</td><td>Default: 4 (Freelancer)</td></tr>
+</table>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/auth/login</span>
+<span class="badge badge-public">Public</span>
+</div>
+<div class="endpoint-desc">Login — return JWT token</div>
+<pre><code>POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@marz.my",
+  "password": "***"
+}</code></pre>
+<p style="margin-top:8px;color:#94a3b8;font-size:0.85em">Response: <code>{ token, user: { id, name, email, role }, refreshToken }</code></p>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/auth/logout</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Logout — invalidate session</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/auth/refresh-token</span>
+<span class="badge badge-public">Public</span>
+</div>
+<div class="endpoint-desc">Refresh access token guna refresh token cookie</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/auth/profile</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan profile user semasa</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/auth/profile</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update profile user semasa</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/auth/change-password</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Tukar password</div>
+</div>
+</div>
+
+<!-- ==================== TASKS ==================== -->
+<div class="section" id="tasks">
+<h2>📋 Tasks (Tugasan)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/tasks</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua tasks (dengan pagination & filter)</div>
+<pre><code>GET /api/tasks?page=1&limit=20&status=Baru&state=Kuala Lumpur</code></pre>
+<table class="params-table">
+<tr><th>Query Param</th><th>Type</th><th>Description</th></tr>
+<tr><td><code>page</code></td><td>number</td><td>Page number (default: 1)</td></tr>
+<tr><td><code>limit</code></td><td>number</td><td>Items per page (default: 20)</td></tr>
+<tr><td><code>status</code></td><td>string</td><td>Filter by status</td></tr>
+<tr><td><code>state</code></td><td>string</td><td>Filter by state</td></tr>
+<tr><td><code>support_type</code></td><td>string</td><td>Filter by support type</td></tr>
+<tr><td><code>search</code></td><td>string</td><td>Search title/description</td></tr>
+</table>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/tasks/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan task by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/tasks</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Cipta task baru</div>
+<pre><code>POST /api/tasks
+Authorization: Bearer ***
+Content-Type: multipart/form-data
+
+{
+  "title": "Setup server baru",
+  "description": "Install Ubuntu 22.04 di server client ABC",
+  "support_type": "Installation",
+  "support_type_id": 1,
+  "client_location": "Menara KL, Kuala Lumpur",
+  "state": "Kuala Lumpur",
+  "deadline": "2026-08-15",
+  "offer_price": 500.00,
+  "project_id": 1
+}</code></pre>
+<table class="params-table">
+<tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>title</code></td><td>string</td><td>✅</td><td>Tajuk task</td></tr>
+<tr><td><code>description</code></td><td>text</td><td>✅</td><td>Deskripsi lengkap</td></tr>
+<tr><td><code>support_type</code></td><td>string</td><td>✅</td><td>Jenis sokongan</td></tr>
+<tr><td><code>client_location</code></td><td>string</td><td>✅</td><td>Lokasi client</td></tr>
+<tr><td><code>state</code></td><td>string</td><td>✅</td><td>Negeri</td></tr>
+<tr><td><code>deadline</code></td><td>date</td><td>✅</td><td>Tarikh deadline</td></tr>
+<tr><td><code>offer_price</code></td><td>number</td><td>✅</td><td>Harga tawaran (RM)</td></tr>
+<tr><td><code>project_id</code></td><td>number</td><td>❌</td><td>ID project berkaitan</td></tr>
+<tr><td><code>main_con_id</code></td><td>number</td><td>❌</td><td>ID main contractor</td></tr>
+<tr><td><code>attachments</code></td><td>file[]</td><td>❌</td><td>Max 5 files</td></tr>
+</table>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/tasks/:id</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Update task</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/tasks/:id/status</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update status task</div>
+<pre><code>PATCH /api/tasks/123/status
+Content-Type: application/json
+
+{
+  "status_id": 3,
+  "remarks": "Task telah diambil oleh freelancer"
+}</code></pre>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/tasks/:id/assign</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Assign task ke freelancer</div>
+<pre><code>PATCH /api/tasks/123/assign
+Content-Type: application/json
+X-API-Key: &lt;api_key&gt;
+
+{
+  "assigned_to": 456
+}</code></pre>
+<p class="endpoint-note">⚠️ Field name is <code>assigned_to</code> (NOT <code>freelancer_id</code>). Using PUT /api/tasks/:id does NOT update assignment — must use PATCH.</p>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/tasks/:id/report</span>
+<span class="badge badge-auth">Freelancer</span>
+</div>
+<div class="endpoint-desc">Submit report untuk task (attachment support)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/tasks/:id/feedback</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Submit feedback untuk task</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/tasks/:id/duplicate</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Duplicate task</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/tasks/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Padam task</div>
+</div>
+
+<h3>Task Status Values</h3>
+<table>
+<tr><th>Status</th><th>Description</th></tr>
+<tr><td><code>Baru</code></td><td>Task baru dicipta</td></tr>
+<tr><td><code>Tawaran Dihantar</code></td><td>Tawaran dihantar ke freelancer</td></tr>
+<tr><td><code>Telah Diambil</code></td><td>Freelancer telah ambil task</td></tr>
+<tr><td><code>Selesai</code></td><td>Task selesai</td></tr>
+<tr><td><code>Borang Disemak & Pembayaran Tertunggak</code></td><td>Report disemak, menunggu bayaran</td></tr>
+<tr><td><code>Telah Dibayar</code></td><td>Pembayaran selesai</td></tr>
+<tr><td><code>Dibatalkan</code></td><td>Task dibatalkan</td></tr>
+<tr><td><code>Selesai Penuh</code></td><td>Task lengkap sepenuhnya</td></tr>
+</table>
+</div>
+
+<!-- ==================== TASK DONE ==================== -->
+<div class="section" id="taskdone">
+<h2>✅ Task Done (Tugasan Siap)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/tasks-done</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua tugasan siap</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/tasks-done/freelancer/:freelancer_id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai tugasan siap mengikut freelancer</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/tasks-done/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan tugasan siap by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/tasks-done</span>
+<span class="badge badge-auth">Freelancer</span>
+</div>
+<div class="endpoint-desc">Submit tugasan siap (dengan PDF attachments)</div>
+<pre><code>POST /api/tasks-done
+Content-Type: multipart/form-data
+
+support_pdf: [file1.pdf, file2.pdf]</code></pre>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/tasks-done/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update tugasan siap</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/tasks-done/:id/submit</span>
+<span class="badge badge-auth">Freelancer</span>
+</div>
+<div class="endpoint-desc">Submit tugasan siap (save + enforce PDF + set task status ke Selesai)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/tasks-done/:id/reviewed</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Tanda sudah disemak & cipta rekod pembayaran</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/tasks-done/:id/files/:fileId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Padam file dari tugasan siap</div>
+</div>
+</div>
+
+<!-- ==================== TASK SETTINGS ==================== -->
+<div class="section" id="tasksettings">
+<h2>⚙️ Task Settings</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/task-settings</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan semua task settings (statuses, support types, equipment codes)</div>
+</div>
+
+<h3>Statuses</h3>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-settings/statuses</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta status baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/task-settings/statuses/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update status</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/task-settings/statuses/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Padam status</div>
+</div>
+
+<h3>Support Types</h3>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-settings/support-types</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta support type baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/task-settings/support-types/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update support type</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/task-settings/support-types/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam support type</div>
+</div>
+
+<h3>Equipment Codes</h3>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-settings/equipment-codes</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta equipment code baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/task-settings/equipment-codes/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update equipment code</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/task-settings/equipment-codes/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam equipment code</div>
+</div>
+</div>
+
+<!-- ==================== TASK REMINDERS ==================== -->
+<div class="section" id="taskreminders">
+<h2>⏰ Task Reminders</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/task-reminders/settings</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Dapatkan global reminder settings</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/task-reminders/settings</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Kemaskini global reminder settings</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-reminders/arrival/confirm</span>
+<span class="badge badge-public">Public</span>
+</div>
+<div class="endpoint-desc">Confirm arrival (tanpa auth — untuk link WhatsApp)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-reminders/arrival/manual/:taskId</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Manual confirm arrival untuk task</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/task-reminders</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Senarai semua task reminders</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/task-reminders/task/:taskId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan reminders untuk task tertentu</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-reminders</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Cipta task reminder baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/task-reminders/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Update task reminder</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/task-reminders/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Padam task reminder</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/task-reminders/bulk-upsert</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Bulk upsert reminders untuk satu task (replace semua untuk task tersebut)</div>
+</div>
+</div>
+
+<!-- ==================== PROJECTS ==================== -->
+<div class="section" id="projects">
+<h2>📁 Projects</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/projects</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua projects</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/projects/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan project by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/projects</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Cipta project baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/projects/:id</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Update project</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/projects/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Padam project</div>
+</div>
+</div>
+
+<!-- ==================== FREELANCERS ==================== -->
+<div class="section" id="freelancers">
+<h2>👷 Freelancers</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/freelancers</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua freelancers</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/freelancers/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Profile freelancer</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/freelancers/:id/profile</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update freelancer profile</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/freelancers/:id/bank-accounts</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai akaun bank freelancer</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/freelancers/:id/bank-accounts</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Tambah akaun bank</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/freelancers/:id/bank-accounts/:accountId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update akaun bank</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/freelancers/:id/bank-accounts/:accountId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Padam akaun bank</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/freelancers/:id/availability</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update availability status freelancer</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/freelancers/:id/tasks</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai tasks freelancer</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/freelancers/tasks/:taskId/apply</span>
+<span class="badge badge-auth">Freelancer</span>
+</div>
+<div class="endpoint-desc">Apply untuk task</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/freelancers/:id/dashboard</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dashboard data freelancer</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/freelancers/:id/available-tasks</span>
+<span class="badge badge-auth">Freelancer</span>
+</div>
+<div class="endpoint-desc">Senarai tasks yang available untuk freelancer</div>
+</div>
+</div>
+
+<!-- ==================== OFFERS ==================== -->
+<div class="section" id="offers">
+<h2>📨 Offers (Tawaran)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/offers/generate</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Generate offer tokens untuk freelancers</div>
+<pre><code>POST /api/offers/generate
+Content-Type: application/json
+
+{
+  "taskId": 123,
+  "freelancerIds": [45, 67, 89]
+}</code></pre>
+<p style="margin-top:8px;color:#94a3b8;font-size:0.85em">Returns: accept/reject links for each freelancer (expires in 7 days)</p>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/offers/task/:taskId</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Senarai offers untuk task tertentu</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/offers/accept/:token</span>
+<span class="badge badge-public">Public</span>
+</div>
+<div class="endpoint-desc">Freelancer accept tawaran</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/offers/reject/:token</span>
+<span class="badge badge-public">Public</span>
+</div>
+<div class="endpoint-desc">Freelancer reject tawaran</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/offers/waiting-list/:taskId</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Senarai waiting list untuk task tertentu</div>
+</div>
+</div>
+
+<!-- ==================== ASSETS ==================== -->
+<div class="section" id="assets">
+<h2>💻 Assets (Aset IT)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/assets</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua aset IT</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/assets/pairing-history</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai pairing history aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/assets/intel/suggest</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">AI suggest — cadangan maklumat aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/assets/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan aset by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/assets/:id/update-logs</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai update logs untuk aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/assets</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Cipta aset baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/assets/:id</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Update aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/assets/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Padam aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/assets/import/validate</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Validate file import aset (Excel/CSV)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/assets/import/process</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Process import aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/assets/scan/extract</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">AI OCR — extract serial numbers dari gambar</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/assets/scan/upsert</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Confirm & upsert aset dari scan result</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/assets/:id/attachments</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Tambah attachment ke aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/assets/:id/attachments/:attachmentId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Padam attachment dari aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/assets/:id/attachments/:attachmentId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update attachment aset</div>
+</div>
+</div>
+
+<!-- ==================== ASSET SETTINGS ==================== -->
+<div class="section" id="assetsettings">
+<h2>⚙️ Asset Settings</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/asset-settings</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan semua asset settings (categories & brands)</div>
+</div>
+
+<h3>Categories</h3>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/asset-settings/categories</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta kategori aset baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/asset-settings/categories/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update kategori aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/asset-settings/categories/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam kategori aset</div>
+</div>
+
+<h3>Brands</h3>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/asset-settings/brands</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta brand baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/asset-settings/brands/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update brand</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/asset-settings/brands/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam brand</div>
+</div>
+</div>
+
+<!-- ==================== ASSET USERS ==================== -->
+<div class="section" id="assetusers">
+<h2>👤 Asset Users (Peruntukan Aset)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/asset-users</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Cipta asset user baru (peruntukkan aset ke user)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/asset-users/asset/:asset_id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai users untuk aset tertentu</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/asset-users/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan asset user by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/asset-users/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Update asset user</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/asset-users/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Padam asset user</div>
+</div>
+</div>
+
+<!-- ==================== ASSET REPORTS ==================== -->
+<div class="section" id="assetreports">
+<h2>📊 Asset Reports</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/asset-reports/top-updaters</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai top updaters aset</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/asset-reports/update-logs</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai update logs aset</div>
+</div>
+</div>
+
+<!-- ==================== MASTERLISTS ==================== -->
+<div class="section" id="masterlists">
+<h2>📊 Masterlists (Senarai Kerja)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/masterlists</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua masterlists</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/masterlists/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan masterlist by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/masterlists</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Cipta masterlist baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/masterlists/:id</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Update masterlist</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/masterlists/:id/duplicate</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Duplicate masterlist</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/masterlists/import/validate</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Validate import file</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/masterlists/import/process</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Process masterlist import</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/masterlists/:id/export</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Export masterlist data</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/masterlists/:id/work-links/:index</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam work link dari masterlist</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/masterlists/:id/work-documents/:index</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam work document dari masterlist</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/masterlists/:id</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Padam masterlist</div>
+</div>
+</div>
+
+<!-- ==================== PAYMENTS ==================== -->
+<div class="section" id="payments">
+<h2>💰 Payments (Pembayaran)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/payments</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua pembayaran</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/payments/prefill/:taskDoneId</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Prefill payment data dari task done</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/payments/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan payment by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/payments</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Cipta pembayaran baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/payments/:id/approve</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Luluskan pembayaran</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/payments/:id/mark-paid</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Tanda sudah bayar (boleh attach slip)</div>
+</div>
+</div>
+
+<!-- ==================== MAIN CONTRACTORS ==================== -->
+<div class="section" id="maincons">
+<h2>🏢 Main Contractors</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/main-cons</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua main contractors</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/main-cons/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan main contractor by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/main-cons</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Cipta main contractor baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/main-cons/:id</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Update main contractor</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/main-cons/:id</span>
+<span class="badge badge-admin">Admin/Staff</span>
+</div>
+<div class="endpoint-desc">Padam main contractor</div>
+</div>
+</div>
+
+<!-- ==================== NOTIFICATIONS ==================== -->
+<div class="section" id="notifications">
+<h2>🔔 Notifications (Notifikasi)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/notifications</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai notifikasi user</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/notifications/all</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Semua notifikasi (WhatsApp, in-app, templates)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/notifications/stats/summary</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Ringkasan statistik notifikasi</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/notifications/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan notifikasi by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/notifications/:id/read</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Tanda sudah dibaca</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/notifications/mark-all-read</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Tanda semua sudah dibaca</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/notifications/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Padam notifikasi</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/notifications/read/all</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Padam semua notifikasi yang sudah dibaca</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/notifications</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta notifikasi baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/notifications/broadcast</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Broadcast notifikasi ke semua users</div>
+</div>
+</div>
+
+<!-- ==================== USERS ==================== -->
+<div class="section" id="users">
+<h2>👤 Users (Pengguna)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/users</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Senarai semua users</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/users</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta user baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/users/:id</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Dapatkan user by ID</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/users/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update user</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/users/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam user</div>
+</div>
+</div>
+
+<!-- ==================== ROLES ==================== -->
+<div class="section" id="roles">
+<h2>🛡️ Roles & Permissions</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/roles</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai semua roles dengan permissions</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/roles</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta role baru</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-put">PUT</span>
+<span class="endpoint-path">/roles/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update role</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/roles/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam role (kecuali system role)</div>
+</div>
+</div>
+
+<!-- ==================== ROLE TYPES ==================== -->
+<div class="section" id="roletypes">
+<h2>📋 Role Types</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/role-types</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai semua role types</div>
+</div>
+
+<h3>Canonical Role Types</h3>
+<table>
+<tr><th>ID</th><th>Name</th><th>Description</th></tr>
+<tr><td>1</td><td>Admin</td><td>Administrative access</td></tr>
+<tr><td>2</td><td>Management</td><td>Management level</td></tr>
+<tr><td>3</td><td>Associate Partner</td><td>Operational staff</td></tr>
+<tr><td>4</td><td>Freelancer</td><td>External freelancer</td></tr>
+</table>
+</div>
+
+<!-- ==================== API KEYS ==================== -->
+<div class="section" id="apikeys">
+<h2>🔑 API Keys</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/api-keys</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai semua API keys (tidak expose raw key)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/api-keys</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Cipta API key baru — raw key hanya dipaparkan sekali</div>
+<pre><code>POST /api/api-keys
+Content-Type: application/json
+
+{
+  "name": "Aliya Task Bot"
+}</code></pre>
+<p style="margin-top:8px;color:#94a3b8;font-size:0.85em">Response: <code>{ key: "spfit_xxxxx...", key_prefix: "spfit_xxxxx" }</code></p>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-patch">PATCH</span>
+<span class="endpoint-path">/api-keys/:id/revoke</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Revoke API key</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-delete">DELETE</span>
+<span class="endpoint-path">/api-keys/:id</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Padam API key secara permanent</div>
+</div>
+</div>
+
+<!-- ==================== SYSTEM ==================== -->
+<div class="section" id="system">
+<h2>⚙️ System</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/system/dashboard</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Dashboard statistics</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/system/health</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">System health status</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/system/settings</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai system settings</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/system/activity-logs</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Activity logs (audit trail)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/system/check-update</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Check for system updates</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/system/apply-update</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Apply system update</div>
+</div>
+</div>
+
+<!-- ==================== OPENAI ==================== -->
+<div class="section" id="openai">
+<h2>🤖 OpenAI Integration</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/openai/config</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Dapatkan OpenAI config (API key, model)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/openai/config</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update OpenAI config</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/openai/test</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Test OpenAI connection</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/openai/models</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai available OpenAI models</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/openai/chat</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Chat dengan OpenAI</div>
+</div>
+</div>
+
+<!-- ==================== GEMINI ==================== -->
+<div class="section" id="gemini">
+<h2>🤖 Gemini Integration</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/gemini/config</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Dapatkan Gemini config (API key, model)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/gemini/config</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update Gemini config</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/gemini/test</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Test Gemini connection</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/gemini/models</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai available Gemini models</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/gemini/generate</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Generate content guna Gemini</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/gemini/generate-content</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Generate content (extended)</div>
+</div>
+</div>
+
+<!-- ==================== ILMU ==================== -->
+<div class="section" id="ilmu">
+<h2>🧠 Ilmu AI Integration</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/ilmu/config</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Dapatkan Ilmu AI config (API key, model, base URL)</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ilmu/config</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Update Ilmu AI config</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ilmu/test</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Test Ilmu AI connection</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/ilmu/models</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Senarai available Ilmu AI models</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ilmu/chat</span>
+<span class="badge badge-admin">Admin</span>
+</div>
+<div class="endpoint-desc">Chat dengan Ilmu AI</div>
+</div>
+</div>
+
+<!-- ==================== AI ASSISTANTS ==================== -->
+<div class="section" id="ai">
+<h2>🤖 AI Assistants</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ai-task-assistant/chat</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">AI Task Assistant — chat untuk bantu create/manage tasks</div>
+<pre><code>POST /api/ai-task-assistant/chat
+Content-Type: multipart/form-data
+
+message: "Tolong buat task untuk setup server di KL"
+files: [optional attachments]</code></pre>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ai-masterlist-assistant/chat</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">AI Masterlist Assistant — chat untuk bantu manage masterlists</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ai-masterlist-assistant/process-pdf</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">AI process PDF — extract data dari dokumen</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/ai-masterlist-assistant/apply</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">AI apply extracted data ke masterlist</div>
+</div>
+</div>
+
+<!-- ==================== WASAPMATIC ==================== -->
+<div class="section" id="wasapmatic">
+<h2>📱 Wasapmatic (WhatsApp)</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-post">POST</span>
+<span class="endpoint-path">/wasapmatic/send</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Hantar WhatsApp message</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/wasapmatic/status</span>
+<span class="badge badge-auth">Auth Required</span>
+</div>
+<div class="endpoint-desc">Check WhatsApp connection status</div>
+</div>
+</div>
+
+<!-- ==================== AUDIT ==================== -->
+<div class="section" id="audit">
+<h2>📝 Audit Trail</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/audit</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Senarai audit logs</div>
+</div>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/audit/export</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Export audit logs</div>
+</div>
+</div>
+
+<!-- ==================== DELIVERY ==================== -->
+<div class="section" id="delivery">
+<h2>📬 Delivery Logs</h2>
+
+<div class="endpoint">
+<div class="endpoint-header">
+<span class="badge badge-get">GET</span>
+<span class="endpoint-path">/delivery</span>
+<span class="badge badge-admin">Admin Only</span>
+</div>
+<div class="endpoint-desc">Senarai delivery logs (WhatsApp/email delivery status)</div>
+</div>
+</div>
+
+<!-- ==================== SUMMARY ==================== -->
+<div class="section">
+<h2>📊 API Summary</h2>
+<table>
+<tr><th>Module</th><th>Prefix</th><th>Endpoints</th><th>Auth</th></tr>
+<tr><td>🔐 Authentication</td><td><code>/auth</code></td><td>7</td><td>Mixed (public + auth)</td></tr>
+<tr><td>📋 Tasks</td><td><code>/tasks</code></td><td>9</td><td>Auth + Admin</td></tr>
+<tr><td>✅ Task Done</td><td><code>/tasks-done</code></td><td>8</td><td>Auth + Freelancer</td></tr>
+<tr><td>⚙️ Task Settings</td><td><code>/task-settings</code></td><td>10</td><td>Admin</td></tr>
+<tr><td>⏰ Task Reminders</td><td><code>/task-reminders</code></td><td>9</td><td>Admin</td></tr>
+<tr><td>📁 Projects</td><td><code>/projects</code></td><td>5</td><td>Auth + Admin</td></tr>
+<tr><td>👷 Freelancers</td><td><code>/freelancers</code></td><td>12</td><td>Auth + Freelancer</td></tr>
+<tr><td>📨 Offers</td><td><code>/offers</code></td><td>5</td><td>Mixed</td></tr>
+<tr><td>💻 Assets</td><td><code>/assets</code></td><td>15</td><td>Auth + Admin</td></tr>
+<tr><td>⚙️ Asset Settings</td><td><code>/asset-settings</code></td><td>7</td><td>Admin</td></tr>
+<tr><td>👤 Asset Users</td><td><code>/asset-users</code></td><td>5</td><td>Auth</td></tr>
+<tr><td>📊 Asset Reports</td><td><code>/asset-reports</code></td><td>2</td><td>Auth</td></tr>
+<tr><td>📊 Masterlists</td><td><code>/masterlists</code></td><td>11</td><td>Auth + Admin</td></tr>
+<tr><td>💰 Payments</td><td><code>/payments</code></td><td>6</td><td>Auth + Admin</td></tr>
+<tr><td>🏢 Main Contractors</td><td><code>/main-cons</code></td><td>5</td><td>Auth + Admin</td></tr>
+<tr><td>🔔 Notifications</td><td><code>/notifications</code></td><td>10</td><td>Auth + Admin</td></tr>
+<tr><td>👤 Users</td><td><code>/users</code></td><td>5</td><td>Auth + Admin</td></tr>
+<tr><td>🛡️ Roles</td><td><code>/roles</code></td><td>4</td><td>Admin</td></tr>
+<tr><td>📋 Role Types</td><td><code>/role-types</code></td><td>1</td><td>Admin</td></tr>
+<tr><td>🔑 API Keys</td><td><code>/api-keys</code></td><td>4</td><td>Admin</td></tr>
+<tr><td>⚙️ System</td><td><code>/system</code></td><td>6</td><td>Admin</td></tr>
+<tr><td>🤖 OpenAI</td><td><code>/openai</code></td><td>5</td><td>Admin</td></tr>
+<tr><td>🤖 Gemini</td><td><code>/gemini</code></td><td>6</td><td>Admin</td></tr>
+<tr><td>🧠 Ilmu AI</td><td><code>/ilmu</code></td><td>5</td><td>Admin</td></tr>
+<tr><td>🤖 AI Assistants</td><td><code>/ai-task-assistant</code><br><code>/ai-masterlist-assistant</code></td><td>4</td><td>Auth</td></tr>
+<tr><td>📱 Wasapmatic</td><td><code>/wasapmatic</code></td><td>2</td><td>Auth</td></tr>
+<tr><td>📝 Audit</td><td><code>/audit</code></td><td>2</td><td>Admin</td></tr>
+<tr><td>📬 Delivery</td><td><code>/delivery</code></td><td>1</td><td>Admin</td></tr>
+<tr><td colspan="2" style="text-align:right;font-weight:600">Total</td><td colspan="2" style="font-weight:600;color:#6ee7b7">156 endpoints across 29 route groups</td></tr>
+</table>
+</div>
+
+<footer style="text-align:center;padding:30px;color:#475569;font-size:0.85em">
+<p>SPFit API Documentation — Verified against source code (2026-08-09)</p>
+<p>Repository: <a href="https://github.com/MarzWebmaster/sistem-pengurusan-freelance-it-tech--spfit-" style="color:#60a5fa">github.com/MarzWebmaster/sistem-pengurusan-freelance-it-tech--spfit-</a></p>
+<p style="margin-top:8px">— Mamat, DevOps Agent</p>
+</footer>
+
+</div>
+</body>
 </html>
